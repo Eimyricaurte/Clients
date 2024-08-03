@@ -3,8 +3,11 @@ package co.edu.uptc.management.clients.rest;
 import java.util.Objects;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
@@ -49,6 +52,43 @@ public class ManagementUser {
 			e.printStackTrace();
 		}
 		return !Objects.isNull(usuarioEncontrado);
+	}
+	
+	@POST
+	@Path("/createUser")
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	public UserDTO createUser(UserDTO userDTO) {
+		if(managementPersistenceUser.getListUserDTO().add(userDTO)) {
+			managementPersistenceUser.dumpFilePlain("users.txt");
+			return userDTO;
+		}
+		return null;
+	}
+	
+	@GET
+	@Path("/getUserByName")
+	@Produces( { MediaType.APPLICATION_JSON } )
+	public 	UserDTO getUserByName(@QueryParam("name") String name){
+		for(UserDTO userDTO: managementPersistenceUser.getListUserDTO()) {
+			if(userDTO.getNameUser().equals(name)) {
+				return userDTO;
+			}
+		}
+		return null;
+	}
+	
+	@DELETE
+	@Path("/deleteUser")
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	public UserDTO deleteUser(@QueryParam("name") String name) {
+		UserDTO userDTO = this.getUserByName(name);
+		if(userDTO != null) {
+			managementPersistenceUser.getListUserDTO().remove(userDTO);
+			managementPersistenceUser.dumpFilePlain("users.txt");
+		}
+		return userDTO;
 	}
 }
 
