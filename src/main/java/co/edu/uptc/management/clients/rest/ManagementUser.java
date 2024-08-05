@@ -1,5 +1,6 @@
 package co.edu.uptc.management.clients.rest;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.ws.rs.Consumes;
@@ -11,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import co.edu.uptc.management.clients.dto.ServiceDTO;
 import co.edu.uptc.management.clients.dto.UserDTO;
 import co.edu.uptc.management.clients.utils.ManagementListUtils;
 import co.edu.uptc.management.persistence.ManagementPersistenceUser;
@@ -25,7 +27,7 @@ public class ManagementUser {
 	
 	static {
 		/* Hacemos el cargue de la información */
-		managementPersistenceUser.loadFilePlain("/data/users.txt");
+		managementPersistenceUser.loadFilePlain("users.txt");
 		
 		/* Enviamos la información cargada de los archivos a la clase utilitaria */
 		managementListUtils = new ManagementListUtils<UserDTO>(
@@ -37,6 +39,13 @@ public class ManagementUser {
 			System.out.println("No se encontró el nombre del atributo en la clase");
 			e.printStackTrace();
 		}
+	}
+	
+	@GET
+	@Path("/getUsers")
+	@Produces( { MediaType.APPLICATION_JSON } )
+	public List<UserDTO> getUsers(){
+		return managementPersistenceUser.getListUserDTO();
 	}
 	
 	@GET

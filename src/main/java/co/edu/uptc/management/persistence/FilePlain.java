@@ -49,7 +49,7 @@ public class FilePlain {
 	*/
 	public void writeFile(String nombreArchivo, String content) {
 		String rutaAbsoluta = 
-				"C:/Users/LENOVO/Desktop/UPTC/workspace/workspace-EE/Library/src/main/resources/data/" + nombreArchivo;
+				"C:/Users/ricau/OneDrive/Desktop/programacion/Progra2/Clients/src/main/resources/data/" + nombreArchivo;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(rutaAbsoluta))) {
             writer.write(content);
         } catch (IOException e) {
